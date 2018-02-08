@@ -1,0 +1,8 @@
+[Desktop Entry]
+Name=RedditWallpaper
+GenericName=RedditWallpaper
+Comment=Takes the top image from r/earthporn by default
+Exec=redditwallpaper
+Terminal=false
+Type=Application
+X-GNOME-Autostart-enabled=true
