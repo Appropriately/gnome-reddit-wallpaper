@@ -1,0 +1,19 @@
+#!/bin/bash
+
+# Script which automatically installs the necessary files into the appropriate \
+# places
+
+if [ "$EUID" -ne 0 ]
+  then echo "Please run as root"
+  exit
+fi
+
+echo "Installing script into /usr/bin"
+cp redditwallpaper /usr/bin
+
+read -n1 -p "Install the script to run on launch?" doit 
+case $doit in  
+  y|Y) cp -rf .config ~/ 
+  printf "\nFinished\n" ;;
+  *) printf "\nLaunch configuration not changed\n" ;; 
+esac

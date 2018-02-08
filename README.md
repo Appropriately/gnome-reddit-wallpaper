@@ -4,6 +4,10 @@
 
 A python script which by default will retrieve the top image of the day from https://www.reddit.com/r/EarthPorn/ and sets it as the wallpaper in the GNOME windows manager. Also contains an optional ``` redditwallpaper.desktop ``` file that can be placed inside of the ``` .config/autostart ``` folder.
 
+## Installation
+
+Installation can either be done using the provided ``` install ``` script or by moving the files manually into the appropriate places.
+
 ## Requirements
 
 To execute, there are some python packages that need importing as well as Python 3+

@@ -2,7 +2,7 @@
 Name=RedditWallpaper
 GenericName=RedditWallpaper
 Comment=Takes the top image from r/earthporn by default
-Exec=redditwallpaper
+Exec=redditwallpaper -r
 Terminal=false
 Type=Application
 X-GNOME-Autostart-enabled=true
