@@ -34,7 +34,6 @@ args = parser.parse_args()
 def setWallpaper(url):
   os.system("gsettings " + SETTING + " file:" + url) # Sets new wallpaper
   print("Wallpaper set.")
-  quit() # Terminate the program
 
 # Chooses a random image from the GNOME wallpapers folder and sets it
 def useDefault():
@@ -49,30 +48,37 @@ reddit = praw.Reddit(client_id='qRiNZNc8eVDn_g',
                      user_agent='linux:wallpaper:0.2 (/u/appropriately)')
 print("Options - Time: " + args.time +" Subreddit: " + args.sub)
 
-#try:
-subreddit_accessed = reddit.subreddit(args.sub)
-top_sub_day = next(subreddit_accessed.top(args.time)) # Get first submission
-top_sub_filename = top_sub_day.url.split('/')[-1]
-top_sub_ext = top_sub_filename.split('.')[-1]
-print("Best image url selected: " + top_sub_day.url)
+# Check that the appropriate directory exists, otherwise there will be errors
+if not os.path.exists(SAVE_DIRECTORY):
+  print("The save directory doesn't exist - creating it now.")
+  os.makedirs(SAVE_DIRECTORY)
 
-current_date = time.strftime("%d%m%Y") # Get time (used for identity)
-filename = current_date + "." + top_sub_ext
+try:
+  subreddit_accessed = reddit.subreddit(args.sub)
+  top_sub_day = next(subreddit_accessed.top(args.time)) # Get first submission
+  top_sub_filename = top_sub_day.url.split('/')[-1]
+  top_sub_ext = top_sub_filename.split('.')[-1]
+  print("Best image url selected: " + top_sub_day.url)
 
-if(top_sub_ext not in ACCEPTED_FORMATS):
-  print("There was a problem with that format.")
-  useDefault()
+  current_date = time.strftime("%d%m%Y") # Get time (used for identity)
+  filename = current_date + "." + top_sub_ext
 
-if args.overwrite:
-  print("Overwriting old image")
-  request.urlretrieve(top_sub_day.url, "/tmp/" + filename)
-  os.system("cp /tmp/" + filename + " " + SAVE_DIRECTORY)
-  setWallpaper(SAVE_DIRECTORY + filename)
-else:
-  if(os.path.isfile(SAVE_DIRECTORY+filename)):
-    print("File for this day already exists!")
+  if(top_sub_ext not in ACCEPTED_FORMATS):
+    print("There was a problem with that format.")
+    useDefault()
+
+  if args.overwrite:
+    # Store the image in a temporary folder so the current one doesn't go black
+    print("Overwriting old image")
+    request.urlretrieve(top_sub_day.url, "/tmp/" + filename)
+    os.system("cp /tmp/" + filename + " " + SAVE_DIRECTORY) # Move from tmp
+    setWallpaper(SAVE_DIRECTORY + filename)
   else:
-    request.urlretrieve(top_sub_day.url, SAVE_DIRECTORY + filename)
-    print("Image downloaded as " + filename + "... setting now.")
-#except:
- # useDefault() # If error, use a default wallpaper
+    if(os.path.isfile(SAVE_DIRECTORY+filename)):
+      print("File for this day already exists!")
+    else:
+      request.urlretrieve(top_sub_day.url, SAVE_DIRECTORY + filename)
+      print("Image downloaded as " + filename + "... setting now.")
+      setWallpaper(SAVE_DIRECTORY + filename) # Set the new wallpaper
+except:
+  useDefault() # If error, use a default wallpaper

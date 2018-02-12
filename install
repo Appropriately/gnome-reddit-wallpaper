@@ -3,17 +3,20 @@
 # Script which automatically installs the necessary files into the appropriate \
 # places
 
+# To write into /usr/bin there needs to be root permissions
 if [ "$EUID" -ne 0 ]
   then echo "Please run as root"
   exit
 fi
 
+# Move script into the /usr/bin folder
 echo "Installing script into /usr/bin"
 cp redditwallpaper /usr/bin
 
+# Give the option to install a script that runs the program on launch
 read -n1 -p "Install the script to run on launch?" doit 
 case $doit in  
-  y|Y) cp -rf .config ~/ 
+  y|Y) cp -r .config/ ~/ 
   printf "\nFinished\n" ;;
   *) printf "\nLaunch configuration not changed\n" ;; 
 esac
