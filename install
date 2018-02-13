@@ -9,8 +9,12 @@ if [ "$EUID" -ne 0 ]
   exit
 fi
 
+# Install the appropriate modules for the script to work
+printf "\nInstalling required Python Modules\n"
+pip install praw wand
+
 # Move script into the /usr/bin folder
-echo "Installing script into /usr/bin"
+printf "\nInstalling script into /usr/bin\n"
 cp redditwallpaper /usr/bin
 
 # Give the option to install a script that runs the program on launch

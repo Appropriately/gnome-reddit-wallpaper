@@ -5,6 +5,7 @@
 import praw 
 import os
 from urllib import request
+from wand.image import Image
 import argparse
 import random
 import time
