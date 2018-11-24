@@ -17,10 +17,13 @@ pip install praw wand
 printf "\nInstalling script into /usr/bin\n"
 cp redditwallpaper /usr/bin
 
+# Geth the user's home
+USER_HOME=$(eval echo ~${SUDO_USER})
+
 # Give the option to install a script that runs the program on launch
 read -n1 -p "Install the script to run on launch?" doit 
 case $doit in  
-  y|Y) cp -r .config/ ~/ 
+  y|Y) cp -r .config/ $USER_HOME 
   printf "\nFinished\n" ;;
   *) printf "\nLaunch configuration not changed\n" ;; 
 esac
